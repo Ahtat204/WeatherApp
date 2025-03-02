@@ -21,8 +21,12 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        val apiKey: String = project.findProperty("apikey") as String
-buildConfigField("String", "apikey", "\"${apiKey}\"")
+        val apiKey: String = project.rootProject.file("local.properties")
+            .inputStream()
+            .use { Properties().apply { load(it) } }
+            .getProperty("API_KEY", "Apikey")
+
+        buildConfigField("String", "apikey", "\"${apiKey}\"")
     }
 
 
